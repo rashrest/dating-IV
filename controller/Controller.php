@@ -107,7 +107,6 @@ class Controller
 
 
         $member = unserialize($_SESSION['$member']);
-
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             //data validation
@@ -131,10 +130,11 @@ class Controller
                 $member->setSeeking($_POST['seek']);
                 $member->setBio($_POST['bio']);
 
+
                 $_SESSION['$member'] = serialize($member);
                 if ($member->ispremMember()) {
                     $this->_f3->reroute('/Interest');
-                } else {
+                } else if (!($member->ispremMember())) {
                     $this->_f3->reroute('/Summary');
                 }
             }
@@ -152,30 +152,34 @@ class Controller
 
 
         $member = unserialize($_SESSION['$member']);
+        $member->setMember(true);
+        $indoorChoice=array();
+        $outdoorChoice=array();
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
             //check to see the options are valid
-            if(isset($_POST['indoor'])){
-                $indoorChoice=$_POST['indoor'];
+            if(isset($_POST['indoorInterests'])){
+                $indoorChoice=$_POST['indoorInterests'];
 
                 //if choices are valid
                 if(validIndoor($indoorChoice)){
-                    $indoorArray = implode(", ", $_POST['indoor']);
+                    $indoorArray = implode(", ",$_POST['indoorInterests']);
                     $member->setInDoorInterests($indoorArray);
                 }
             }
 
-            if(isset($_POST['outdoor'])){
-                $outdoorChoice=$_POST['outdoor'];
+            if(isset($_POST['outdoorInterests'])){
+                $outdoorChoice=$_POST['outdoorInterests'];
 
                 //if choices are valid
                 if(validIndoor($outdoorChoice)){
-                   $outdoorArray = implode(", ", $_POST['outdoor']);
+                   $outdoorArray = implode(", ",$_POST['outdoorInterests']);
                     $member->setOutDoorInterests($outdoorArray);
                 }
-                $_SESSION['$member'] = serialize($member);
             }
+            $_SESSION['$member'] = serialize($member);
             header('location: Summary');
         }
 
@@ -190,7 +194,7 @@ class Controller
 //        Display the personal information form
         $member = unserialize($_SESSION['$member']);
 
-        var_dump($member);
+
         $this->_f3->set('fName', $member->getFname());
         $this->_f3->set('lName', $member->getLname());
         $this->_f3->set('age' , $member->getAge());
@@ -201,7 +205,8 @@ class Controller
         $this->_f3->set('seeking', $member->getSeeking());
         $this->_f3->set('bio', $member->getBio());
 
-        if ($member->ispremMember()){
+
+        if ($member->ispremMember()===true){
             $this->_f3->set('inDoorInterests', array($member->getInDoorInterests()));
             $this->_f3->set('outDoorInterests', array($member->getOutDoorInterests()));
         }
