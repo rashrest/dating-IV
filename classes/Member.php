@@ -177,5 +177,14 @@ class Member
         return $this->_member;
     }
 
+    /**
+     * @param bool|mixed $member
+     */
+    public function setMember(bool $member): void
+    {
+        $this->_member = $member;
+    }
+
+
 
 }
