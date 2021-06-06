@@ -52,19 +52,20 @@
                     <td class="tg-0lax">Seeking : {{ @SESSION.seek}}</td>
                 </tr>
                 <tr>
-                    <check if="{{ isset(@inDoorInterests) || isset(@outDoorInterests)}}">
+                    <check if="{{ isset(@inDoorInterests) }}">
                         <td class="tg-0lax">
                             <p>Interests: </p>
                             <repeat group="{{ @inDoorInterests }}" value="{{ @inDoorInterest }}">
                                 <p>{{ @inDoorInterest }}</p>
                             </repeat>
-
+                    </check>
+                                <check if="isset(@outDoorInterests)}}">
                             <repeat group="{{ @outDoorInterests }}" value="{{ @outDoorInterest }}">
                                 <p>{{ @outDoorInterest }}</p>
                             </repeat>
+                            </check>
                         </td>
-                    </check>
-<!--                    Interests: {{ @SESSION.indoor}}, {{ @SESSION.outdoor}} </td>-->
+
                 </tr>
                 </tbody>
             </table>

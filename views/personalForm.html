@@ -67,6 +67,10 @@
                 <label for="female">Female</label><br>
             </div>
 
+            <check if="{{ isset(@errors['gender']) }}">
+                <span class="err" style="color: red;">{{ @errors['gender'] }}</span>
+            </check>
+
 
             <div class="form-group">
                 <label for="phone">Phone</label>
